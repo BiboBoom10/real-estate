@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const userRouter = require('./routes/User.js');
 const authRouter = require('./routes/auth');
+const listingRouter = require('./routes/listing.js')
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(cookieParser());
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/listing', listingRouter);
+
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';

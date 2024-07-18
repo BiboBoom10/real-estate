@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase';
-import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice';
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUsereStart, deleteUserSuccess, deleteUserFailure, signOutUsereStart, signOutUserSuccess, signOutUserFailure } from '../redux/user/userSlice';
+import { Link, json } from 'react-router-dom';
 
 function Profile() {
 
@@ -85,6 +86,47 @@ function Profile() {
     }
   }
 
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUsereStart());
+
+      const response = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE'
+      })
+      
+      const data = await response.json();
+
+      if(data.success === false) {
+        dispatch(deleteUserFailure(data.message)); 
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+    }
+  }
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUsereStart());
+      const response = await fetch('/api/auth/signout');
+      const data = await response.json();
+
+      if(data.success === false) {
+        dispatch(signOutUserFailure(data.message))
+        return;
+      }
+
+      dispatch(signOutUserSuccess(data));
+
+    } catch (error) {
+      dispatch(signOutUserFailure());
+      console.log(error);
+    }
+  }
+
   return (
     <div className='max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -103,10 +145,11 @@ function Profile() {
         <input type="email" placeholder='email' defaultValue={currentUser.email} onChange={handleChange} id='email' className='border p-3 rounded-lg' />
         <input type="password" placeholder='password' onChange={handleChange} id='password' className='border p-3 rounded-lg' />
         <button disabled={loading} type='submit'  className='bg-slate-700 text-white p-3 rounded-lg hover:opacity-90 disabled:opacity-70'>{loading? 'Loading...': 'Update'}</button>
+        <Link className='bg-green-700 text-white text-center rounded-lg p-3 hover:opacity-90 disabled:opacity-70' to={'/create-listing'}>Create Listing</Link>
       </form>
       <div className='flex justify-between mt-5'>
-        <span className='text-red-700 cursor-pointer'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer'>Sign Out</span>
+        <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer'>Delete Account</span>
+        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>Sign Out</span>
       </div>
       <p className='text-red-500 mt-5'>{error ? error : ''}</p>
       <p className='text-green-500 text-center'>{updateSuccess ? 'User updated successfully': ''}</p>
