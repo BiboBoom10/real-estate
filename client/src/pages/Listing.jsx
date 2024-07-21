@@ -6,6 +6,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import { useSelector } from 'react-redux';
 import { FaBath, FaBed, FaChair, FaMapMarkedAlt, FaMapMarkerAlt, FaParking, FaShare } from 'react-icons/fa';
+import Contact from '../components/Contact';
 
 function Listing() {
 
@@ -108,6 +109,12 @@ function Listing() {
               <li className='flex items-center gap-2 whitespace-nowrap text-black font-semibold text-sm'><FaParking className='text-lg text-slate-600' />{listing.parking ? 'Parking Spot' : 'No Parking'}</li>
               <li className='flex items-center gap-2 whitespace-nowrap text-black font-semibold text-sm'><FaChair className='text-lg text-slate-600' />{listing.furnished ? 'Furnished' : 'Not Furnished'}</li>
             </ul>
+
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button onClick={() => setContact(true)} className='p-3 bg-slate-700 rounded-lg hover:opacity-90 text-white'>Contact Landlord</button>
+            )}
+
+            {contact && <Contact listing={listing} />}
 
           </div>
 

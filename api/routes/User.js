@@ -1,5 +1,5 @@
 const express = require('express');
-const {test, updateUser, deleteUser, userListing} = require('../controllers/User');
+const {test, updateUser, deleteUser, userListing, getUser} = require('../controllers/User');
 const { verifyToken } = require('../utils/verifyUser');
 
 const router = express.Router();
@@ -10,6 +10,8 @@ router.post('/update/:id', verifyToken ,updateUser);
 
 router.delete('/delete/:id', verifyToken , deleteUser);
 
-router.get('/listings/:id', verifyToken, userListing)
+router.get('/listings/:id', verifyToken, userListing);
+
+router.get('/:id', verifyToken, getUser);
 
 module.exports = router;
