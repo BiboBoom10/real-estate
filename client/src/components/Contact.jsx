@@ -6,6 +6,11 @@ function Contact({listing}) {
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState('');
 
+  // const subject = `Regarding ${listing.name}`;
+  // const body = message;
+
+  // const mailtoLink = `mailto:${landlord.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
   useEffect(() => {
     const fetchLandlord = async () => {
     try {
@@ -31,7 +36,10 @@ function Contact({listing}) {
       <div className="flex flex-col gap-2">
         <p>Contact <span className='font-semibold'>{landlord.username}</span> for <span className='font-semibold'>{listing.name}</span></p>
         <textarea className='w-full p-3 rounded-lg border' placeholder='Enter your message here ...' name="message" id="message" value={message} onChange={handleMessage} rows="2"></textarea>
-        <Link to={`mailto:${landlord.email}?subject=Regarding ${listing.name}& body=${message}`} className='bg-slate-700 text-center p-3 rounded-lg text-white hover:opacity-90'>
+        {/* <Link to={mailtoLink} className='bg-slate-700 text-center p-3 rounded-lg text-white hover:opacity-90'>
+          Send Message
+        </Link> */}
+        <Link to={`mailto:${landlord.email}?subject=Regarding${listing.name}& body=${message}`} className='bg-slate-700 text-center p-3 rounded-lg text-white hover:opacity-90'>
           Send Message
         </Link>
       </div>

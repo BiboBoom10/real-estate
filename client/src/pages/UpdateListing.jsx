@@ -252,7 +252,7 @@ function UpdateListing() {
             ))
           }
 
-          <button disabled={loading || uploading} className='p-3 bg-slate-700 text-white rounded-lg hover:opacity-90 disabled:opacity-70'>{loading ? 'Creating ...' : 'Update Listing'}</button>
+          <button disabled={loading || uploading} className='p-3 bg-slate-700 text-white rounded-lg hover:opacity-90 disabled:opacity-70'>{loading ? 'Updating ...' : 'Update Listing'}</button>
           {error && <p className='text-red-500 text-center'>{error  }</p>}
 
         </div>
