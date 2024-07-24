@@ -5,7 +5,7 @@ import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import { useSelector } from 'react-redux';
-import { FaBath, FaBed, FaChair, FaMapMarkedAlt, FaMapMarkerAlt, FaParking, FaShare } from 'react-icons/fa';
+import { FaBath, FaBed, FaChair, FaMapMarkerAlt, FaParking, FaShare } from 'react-icons/fa';
 import Contact from '../components/Contact';
 
 function Listing() {
@@ -93,7 +93,7 @@ function Listing() {
                 {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
               </p>
               {listing.offer && (
-                <p className='bg-green-700 w-full max-w-[200px] text-white text-center rounded-md p-1' >Ksh. {+listing.regularPrice - +listing.discountPrice}</p>
+                <p className='bg-green-700 w-full max-w-[200px] text-white text-center rounded-md p-1' ><span className='font-semibold'>Discount:</span> Ksh. {+listing.regularPrice - +listing.discountPrice}</p>
               )}
             </div>
             <p className='text-slate-700 text-justify'>

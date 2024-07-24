@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ListingItem from '../components/ListingItem';
 
 function Search() {
 
@@ -16,6 +17,7 @@ function Search() {
 	});
 	const [loading, setLoading] = useState(false);
 	const [listings, setListings] = useState([]);
+	const [showMore, setShowMore] = useState(false);
 	console.log(listings);
 
 	useEffect(() =>{
@@ -42,11 +44,17 @@ function Search() {
 
 		const fetchListings = async () => {
 			setLoading(true);
+			setShowMore(false);
 			try {
 				const searchQuery = urlParams.toString();
 				const response = await fetch(`/api/listing/get-listings?${searchQuery}`);
 
 				const data = await response.json();
+				if (data.length > 8) {
+					setShowMore(true);
+				} else {
+					setShowMore(false);
+				}
 				setListings(data);
 				setLoading(false)
 			} catch (error) {
@@ -94,6 +102,23 @@ function Search() {
 
 		const searchQuery = urlParams.toString();
 		navigate(`/search?${searchQuery}`)
+	}
+
+	const onShowMoreClick = async () => {
+		const numberOfListings = listings.length;
+		const startIndex = numberOfListings;
+		const urlParams = new URLSearchParams(location.search);
+
+		urlParams.set('startIndex', startIndex);
+
+		const searchQuery = urlParams.toString();
+		const response = await fetch(`/api/listing/get-listings?${searchQuery}`);
+
+		const data = await response.json();
+		if(data.length < 9) {
+			setShowMore(false);
+		}
+		setListings([...listings, ...data]);
 	}
 
   return (
@@ -171,8 +196,26 @@ function Search() {
 
         </form>
       </div>
-      <div className="">
+      <div className="flex-1">
         <h1 className='text-slate-700 font-semibold mt-5 p-3 border-b-2 text-3xl'>Listing Results</h1>
+		<div className="flex flex-wrap gap-4 p-5">
+			{!loading && listings.length === 0 && (
+				<p className='text-xl text-slate-700'>No listings found!</p>
+			)}
+			{loading && (
+				<p className='text-xl w-full text-center text-slate-700'>Loading...</p>
+			)}
+
+			{!loading && listings && listings.map((listing) => (
+				<ListingItem key={listing._id} listing={listing} />
+			))}
+			{!showMore && (
+				<button
+				className='text-green-700 hover:underline p-7'
+				onClick={onShowMoreClick}
+			>Show more</button>
+			)}
+		</div>
       </div>
     </div>
   )
