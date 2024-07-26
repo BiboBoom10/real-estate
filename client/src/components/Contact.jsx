@@ -24,7 +24,7 @@ function Contact({listing}) {
   }
     fetchLandlord();
 
-  }, [listing.userRef])
+  }, [listing.userRef]);
 
   const handleMessage = (event) => {
     setMessage(event.target.value);
