@@ -17,7 +17,7 @@ function Contact({listing}) {
         const response = await fetch(`/api/user/${listing.userRef}`);
         const data = await response.json();
         setLandlord(data);
-        console.log(data);
+        console.log('This works');
       
     } catch (error) {
       console.log(error);
